@@ -1,0 +1,37 @@
+{
+  "name": "reactive-commands",
+  "version": "0.0.1",
+  "description": "",
+  "author": "AndSelm <and.selm@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:FunkMonkey/reactive-commands.git"
+  },
+  "homepage": "https://github.com/FunkMonkey/reactive-commands",
+  "bugs": {
+    "url": "https://github.com/FunkMonkey/reactive-commands/issues"
+  },
+  "main": "build/index.js",
+  "scripts": {
+    "build": "gulp build",
+    "watch:build": "gulp watch:build"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "7.0.0-beta.32",
+    "@babel/core": "7.0.0-beta.32",
+    "eslint": "4.11.0",
+    "eslint-config-funkmonkey": "0.0.1",
+    "eslint-plugin-import": "2.8.0",
+    "gulp": "3.9.1",
+    "gulp-babel": "8.0.0-beta.0",
+    "gulp-util": "3.0.8"
+  },
+  "dependencies": {
+    "custom-error-generator": "7.0.0",
+    "graphlib": "2.1.0",
+    "ramda": "0.25.0",
+    "reactive-graph": "1.0.0",
+    "rxjs": "5.4.2"
+  }
+}
