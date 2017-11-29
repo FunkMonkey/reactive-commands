@@ -8,15 +8,15 @@ export {
 };
 
 export class ReactiveCommand {
-  constructor( template, connector ) {
+  constructor( template, data, connector ) {
     this.template = template;
+    this.data = data;
     this.connector = connector;
-    this.data = template.data || {};
     this.nodes = null;
   }
 
   instantiate() {
-    this.nodes = ReactiveGraph.instantiate( this.template.graph,
+    this.nodes = ReactiveGraph.instantiate( this.template,
       this.connector.insertNode.bind( this.connector, this ) );
 
     return this;
@@ -27,8 +27,8 @@ export class ReactiveCommand {
   }
 }
 
-export function instantiate( template, connector ) {
-  const command = new ReactiveCommand( template, connector );
+export function instantiate( template, data, connector ) {
+  const command = new ReactiveCommand( template, data, connector );
   return command.instantiate();
 }
 
