@@ -3,8 +3,9 @@ import { UnknownNodeTypeError } from './errors';
 import { getNodeType } from './graph-utils';
 
 export default class BasicConnector {
-  constructor( { Observable } ) {
+  constructor( { Observable, merge } ) {
     this.Observable = Observable;
+    this.merge = merge;
     this.operators = {};
   }
 
@@ -23,26 +24,19 @@ export default class BasicConnector {
   // Simple inserter that will be called for every operator.
   // Expects an array with the operator's name as the first element.
   insertOperator( command, id, nodeConfig, sources ) {
-    let operatorName = nodeConfig.operator;
-    const args = nodeConfig.args || [];
+    const operatorName = nodeConfig.operator;
 
     // custom operators
     const operator = this.getOperator( operatorName );
     if ( operator ) {
       return operator( sources, nodeConfig, command );
 
-    // Rx static operators
-    } else if ( operatorName.startsWith( 'Observable.' ) ) {
-      operatorName = operatorName.substr( 11 );
-
-      // passing the sources (for 'merge', 'concat', etc.)
-      return this.Observable[ operatorName ]( ...sources, ...args );
+    // handle subscriptions
+    } else if ( operatorName === 'subscribe' ) {
+      return sources[0].subscribe( ...sources.splice( 1 ) );
     }
 
-    // Rx non-static operators
-    const source = sources[0];
-    const restSources = sources.splice( 1 );
-    return source[ operatorName ]( ...restSources, ...args );
+    throw new Error( `Operator "${operatorName}" not found!` );
   }
 
   insertNode( command, id, nodeConfig, sources ) {
@@ -53,7 +47,7 @@ export default class BasicConnector {
       case 'to-output':
       case 'to-subgraph-input':
       case 'from-subgraph-output': {
-        return ( sources.length === 1 ) ? sources[0] : this.Observable.merge( ...sources );
+        return ( sources.length === 1 ) ? sources[0] : this.merge( ...sources );
       }
       case 'operator': {
         return this.insertOperator( command, id, nodeConfig, sources );

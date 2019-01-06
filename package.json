@@ -30,7 +30,6 @@
     "custom-error-generator": "7.0.0",
     "graphlib": "2.1.0",
     "ramda": "0.25.0",
-    "reactive-graph": "1.0.0",
-    "rxjs": "5.4.2"
+    "reactive-graph": "1.0.0"
   }
 }
