@@ -6,11 +6,11 @@ function propNameIfIn( propName, obj ) {
 }
 
 export function getNodeType( nodeValue ) {
-  return propNameIfIn( 'from-input', nodeValue ) ||
-         propNameIfIn( 'to-output', nodeValue ) ||
-         propNameIfIn( 'to-subgraph-input', nodeValue ) ||
-         propNameIfIn( 'from-subgraph-output', nodeValue ) ||
-         propNameIfIn( 'operator', nodeValue );
+  return propNameIfIn( 'from-input', nodeValue )
+         || propNameIfIn( 'to-output', nodeValue )
+         || propNameIfIn( 'to-subgraph-input', nodeValue )
+         || propNameIfIn( 'from-subgraph-output', nodeValue )
+         || propNameIfIn( 'operator', nodeValue );
 }
 
 export function getNodeInfo( nodeValue, nodeType ) {
@@ -19,22 +19,18 @@ export function getNodeInfo( nodeValue, nodeType ) {
 
 export function copyNodesInto( fromGraph, toGraph ) {
   R.forEachObjIndexed( ( nodeValue, nodeID ) => {
-    if ( toGraph.hasNode( nodeID ) )
-      throw new NodeAlreadyExistsError( nodeID );
+    if ( toGraph.hasNode( nodeID ) ) throw new NodeAlreadyExistsError( nodeID );
     toGraph.setNode( nodeID, nodeValue );
   }, fromGraph._nodes );
 }
 
 export function copyEdgesInto( fromGraph, toGraph ) {
   R.forEachObjIndexed( edgeObj => {
-    if ( !toGraph.hasNode( edgeObj.v ) )
-      throw new NodeDoesNotExistError( edgeObj.v ); // TODO Error messages
+    if ( !toGraph.hasNode( edgeObj.v ) ) throw new NodeDoesNotExistError( edgeObj.v ); // TODO Error messages
 
-    if ( !toGraph.hasNode( edgeObj.w ) )
-      throw new NodeDoesNotExistError( edgeObj.w );
+    if ( !toGraph.hasNode( edgeObj.w ) ) throw new NodeDoesNotExistError( edgeObj.w );
 
-    if ( toGraph.hasEdge( edgeObj ) )
-      throw new EdgeAlreadyExistsError( edgeObj.v, edgeObj.w );
+    if ( toGraph.hasEdge( edgeObj ) ) throw new EdgeAlreadyExistsError( edgeObj.v, edgeObj.w );
 
     toGraph.setEdge( edgeObj, fromGraph.edge( edgeObj ) );
   }, fromGraph._edgeObjs );

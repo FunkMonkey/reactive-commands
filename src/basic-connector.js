@@ -30,9 +30,10 @@ export default class BasicConnector {
     const operator = this.getOperator( operatorName );
     if ( operator ) {
       return operator( sources, nodeConfig, command );
+    }
 
     // handle subscriptions
-    } else if ( operatorName === 'subscribe' ) {
+    if ( operatorName === 'subscribe' ) {
       return sources[0].subscribe( ...sources.splice( 1 ) );
     }
 

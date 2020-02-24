@@ -36,8 +36,7 @@ export default class BasicTemplateCreator {
     let extComponent = currComponent;
     if ( currComponent.extends ) {
       const gTemplateToExtend = this.components[ currComponent.extends ];
-      if ( gTemplateToExtend == null )
-        throw new ComponentDoesNotExistError( currComponent.extends );
+      if ( gTemplateToExtend == null ) throw new ComponentDoesNotExistError( currComponent.extends );
       extComponent = R.merge( gTemplateToExtend, currComponent );
     }
 
@@ -64,33 +63,28 @@ export default class BasicTemplateCreator {
           case 'to-output': {
             const nodeID = `${extComponent.name}::${nodeInfo}`;
             graph.setNode( nodeID, nodeValue );
-            if ( info.prevID )
-              graph.setEdge( info.prevID, nodeID, 0 );
+            if ( info.prevID ) graph.setEdge( info.prevID, nodeID, 0 );
             info.prevID = nodeID;
             break;
           }
           case 'to-subgraph-input': {
             const nodeID = nodeInfo;
-            if ( !graph.hasNode( nodeID ) )
-              throw new NodeDoesNotExistError( nodeID );
-            if ( info.prevID )
-              graph.setEdge( info.prevID, nodeID, 0 );
+            if ( !graph.hasNode( nodeID ) ) throw new NodeDoesNotExistError( nodeID );
+            if ( info.prevID ) graph.setEdge( info.prevID, nodeID, 0 );
             info.prevID = nodeID;
             break;
           }
           case 'from-subgraph-output': {
             const nodeID = nodeInfo;
             graph.setNode( nodeID, nodeValue );
-            if ( !graph.hasNode( nodeID ) )
-              throw new NodeDoesNotExistError( nodeID );
+            if ( !graph.hasNode( nodeID ) ) throw new NodeDoesNotExistError( nodeID );
             info.prevID = nodeID;
             break;
           }
           case 'operator': {
             const nodeID = `${extComponent.name}::${nodeGroupName}-${info.index}`;
             graph.setNode( nodeID, nodeValue );
-            if ( info.prevID )
-              graph.setEdge( info.prevID, nodeID, 0 );
+            if ( info.prevID ) graph.setEdge( info.prevID, nodeID, 0 );
             info.prevID = nodeID;
             break;
           }
@@ -101,7 +95,8 @@ export default class BasicTemplateCreator {
         return info;
       },
       { prevID: '', index: 0 },
-      nodeGroup ), extComponent.graph );
+      nodeGroup ), extComponent.graph
+    );
 
     return {
       graph,
